@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head> 
+	<title>Reservas</title> 
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<!--librerias jquery para el calendario y fuciones desde el lado del cliente-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
+	<link rel="stylesheet"	href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" />
+	<!--incluir funciones javascript desde un archivo en la carpeta static-->
+	<script type="text/javascript" th:src="@{/js/functions.js}"></script>
+</head>
+<body>
+	<form th:action="@{/rooms}" th:object="${rooms}" method="post" enctype="multipart/form-data">
+		<div class="col-xs-2 col-md-offset-4 col-md-4">
+			<h2>Buscar habitaciones disponibles</h2>						
+					Desde <input class="form-control" id="from" name="from" autocomplete="off" readonly='readonly' th:attr="value = ${from}" type="text"/>	
+					Hasta <input class="form-control" id="to" name="to" autocomplete="off" readonly='readonly' th:attr="value = ${to}" type="text"/>		
+					<p style=color:#FF0000; th:text=${mensaje}></p>
+					Ocupantes <input class="form-control" name="sleeps" type="text"/>
+
+	  		<table class="table table-sm table-condensed">
+				<tr>
+					<th>
+						Habitacion
+					</th>
+					<th>
+						Precio diario
+					</th>
+					<th>
+						Capacidad
+					</th>
+					<th>
+						Servicios
+					</th>
+					<th>
+						Reservar
+					</th>
+				</tr>
+					<tr th:each="room : ${listRooms}">
+						<td th:text="${room.name}"></td>
+						<td th:text="${room.price}"></td>
+						<td th:text="${room.occupancy}"></td>
+						<td th:text="${room.facilities}"></td>
+					<td>
+						<a th:href="@{/bookingDetail/{id}/{from}/{to}/{name}/{price}/{occupancy}/{facilities}(id=${room.idRoom},from=${from},to=${to},name=${room.name},price=${room.price},occupancy=${room.occupancy},facilities=${room.facilities})}"><span>Reservar</span></a>
+					</td>
+				</tr>
+			</table>
+			<button type="submit" class="btn btn-success">Buscar</button>
+			<button type="button" class="btn btn-primary" th:onclick="|window.location.href='/'|"> Volver</button>
+		
+		</div>			
+	</form>
+</body>
+</html>
